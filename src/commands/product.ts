@@ -10,19 +10,17 @@ module.exports = {
         .addStringOption((option) => option.setName('name').setDescription('Enter a product name').setRequired(true)),
     async execute(interaction: CommandInteraction) {
         // Get product name from interaction
-        const productName = interaction.options.getString('name');
+        const productName = interaction.options.getString('name')!;
 
-        if (!productName) {
-            interaction.reply({ content: 'Product not found', ephemeral: true });
-            return;
-        }
+        // Defer interaction to allow for more time
+        await interaction.deferReply();
 
         try {
+            // Get product and reply with embed
             const embed: MessageEmbed = await getProductEmbedFromProductName(productName);
-
-            await interaction.reply({ embeds: [embed] });
+            await interaction.editReply({ embeds: [embed] });
         } catch (error) {
-            interaction.reply({ content: `No products found for: \`\`${productName}\`\``, ephemeral: true });
+            await interaction.editReply(`No products found for: \`\`${productName}\`\``);
         }
     }
 };

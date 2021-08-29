@@ -17,7 +17,15 @@ Finding the first product that matches a query:
 ```
 
 ### Stores
+Finding the nearest store to a given address:
+```bash
+/store <address>
+```
 
 ### Recipes
+Find a recipe matching a query:
+```bash
+/recipe <query>
+```
 
 ### Orders

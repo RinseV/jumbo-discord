@@ -13,6 +13,8 @@
   "devDependencies": {
     "@types/dotenv-safe": "^8.1.2",
     "@types/node": "^16.7.5",
+    "@types/node-geocoder": "^3.24.2",
+    "@types/staticmaps": "^1.5.1",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
     "dotenv-safe": "^8.2.0",
@@ -28,8 +30,13 @@
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
+    "@turf/distance": "^6.5.0",
+    "@turf/great-circle": "^6.5.0",
+    "date-fns": "^2.23.0",
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
-    "jumbo-wrapper": "^1.0.8"
+    "jumbo-wrapper": "^1.0.8",
+    "node-geocoder": "^3.27.0",
+    "staticmaps": "^1.6.0"
   }
 }

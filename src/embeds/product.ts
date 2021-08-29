@@ -3,7 +3,12 @@ import { Jumbo } from 'jumbo-wrapper';
 import { ProductModel } from 'jumbo-wrapper/dist/product/productModel';
 import { ProductSortOptions } from 'jumbo-wrapper/dist/product/productQueryModel';
 
-// Creates a message embed from multiple products
+/**
+ * Creates an embed for a list of products
+ * @param query Query used to search for products
+ * @param products Products belonging to query
+ * @returns Embed with products
+ */
 export function createEmbedFromProducts(query: string, products: ProductModel[]): MessageEmbed {
     const embed: MessageEmbedOptions = {
         color: 0xfdc513,
@@ -36,7 +41,11 @@ export function createEmbedFromProducts(query: string, products: ProductModel[])
     return new MessageEmbed(embed);
 }
 
-// Creates a message embed from a single product
+/**
+ * Creates an embed for a single product with name, price, URL and image
+ * @param product Product to show
+ * @returns Embed with product information
+ */
 export function createEmbedFromProduct(product: ProductModel): MessageEmbed {
     const imagePartial: Partial<MessageEmbedImage> = {
         url: product.product.data.imageInfo.primaryView[0].url
