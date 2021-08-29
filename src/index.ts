@@ -12,6 +12,7 @@ const client = new CommandClient({ intents: [Intents.FLAGS.GUILDS] });
 
 const commandFiles = readdirSync(dirPath).filter((file) => file.endsWith('.ts'));
 
+// Initialise commands in the client
 for (const file of commandFiles) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const command = require(`${dirPath}/${file}`);
@@ -29,13 +30,16 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 
     const commandInteraction = interaction as CommandInteraction;
 
+    // Find command with command name
     const command = client.commands.get(commandInteraction.commandName);
 
+    // If command is not found, return
     if (!command) {
         console.log(`${commandInteraction.commandName} not found`);
         return;
     }
 
+    // Execute command
     try {
         await command.execute(commandInteraction);
     } catch (error) {
