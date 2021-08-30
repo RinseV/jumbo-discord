@@ -1,7 +1,7 @@
 import distance from '@turf/distance';
 import greatCircle from '@turf/great-circle';
 import { addDays, differenceInMinutes, format, fromUnixTime, isBefore, parse } from 'date-fns';
-import { MessageEmbed, MessageEmbedOptions } from 'discord.js';
+import { MessageAttachment, MessageEmbed, WebhookMessageOptions } from 'discord.js';
 import { Jumbo } from 'jumbo-wrapper';
 import { StoreData } from 'jumbo-wrapper/dist/store/storeModel';
 import NodeGeocoder, { OpenStreetMapOptions } from 'node-geocoder';
@@ -13,16 +13,21 @@ import StaticMaps, { AddMarkerOptions } from 'staticmaps';
  * @param store Closest store to query
  * @returns Embed from closest store
  */
-export function createEmbedFromStore(inAddress: Coordinates, store: StoreData): MessageEmbed {
+export async function createEmbedFromStore(inAddress: Coordinates, store: StoreData): Promise<WebhookMessageOptions> {
     const storeCoordinates: Coordinates = {
         longitude: store.longitude,
         latitude: store.latitude
     };
     const distance = calculateDistance(inAddress, storeCoordinates);
-    const embed: MessageEmbedOptions = {
-        color: 0xfdc513,
-        title: `${store.name}`,
-        fields: [
+
+    // Generate map image
+    await generateMapImage(inAddress, storeCoordinates);
+    const image = new MessageAttachment('src/assets/map.png');
+
+    const embed = new MessageEmbed()
+        .setTitle(store.name)
+        .setColor(0xfdc513)
+        .setFields([
             {
                 name: 'Your address',
                 value: formatAddress(inAddress),
@@ -43,16 +48,13 @@ export function createEmbedFromStore(inAddress: Coordinates, store: StoreData): 
                 value: `${formatDistance(distance)}`,
                 inline: false
             }
-        ],
-        timestamp: new Date(),
-        footer: {
-            text: 'Powered by Jumbo',
-            icon_url: 'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png'
-        },
-        url: createUrlFromStoreName(store.name)
-    };
+        ])
+        .setTimestamp(new Date())
+        .setFooter('Powered by Jumbo', 'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png')
+        .setURL(createUrlFromStoreName(store.name))
+        .setImage('attachment://map.png');
 
-    return new MessageEmbed(embed);
+    return { embeds: [embed], files: [image] };
 }
 
 // Formats the opening times of a store
@@ -216,13 +218,13 @@ export async function generateMapImage(coordinates: Coordinates, storeCoordinate
     const map = new StaticMaps(options);
     const marker: AddMarkerOptions = {
         coord: [coordinates.longitude, coordinates.latitude],
-        img: 'marker.png',
+        img: 'src/assets/marker.png',
         height: 48,
         width: 48
     };
     const jumboMarker: AddMarkerOptions = {
         coord: [storeCoordinates.longitude, storeCoordinates.latitude],
-        img: 'jumboMarker.png',
+        img: 'src/assets/jumboMarker.png',
         height: 48,
         width: 48
     };
@@ -258,5 +260,6 @@ export async function generateMapImage(coordinates: Coordinates, storeCoordinate
     }
 
     await map.render();
-    await map.image.save('map.png');
+    await map.image.save('src/assets/map.png');
+    return;
 }

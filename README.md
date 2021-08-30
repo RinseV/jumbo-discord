@@ -31,7 +31,7 @@ Finding the nearest store to a given address:
 ```bash
 /store <address>
 ```
-This shows the nearest Jumbo store to the given address, including the store's opening times and crow-fly distance.
+This shows the nearest Jumbo store to the given address, including the store's opening times and crow-fly distance. This embed also includes a map image with pins showing the given location and the nearest store's location.
 
 <br/>
 

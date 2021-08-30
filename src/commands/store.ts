@@ -20,9 +20,10 @@ module.exports = {
             // Get location, find nearest store and send embed
             const coordinates = await interpretCoordinates(addressString);
             const storeLocationData = await findNearestStore(coordinates);
-            const embed = createEmbedFromStore(coordinates, storeLocationData.store);
-            await interaction.editReply({ embeds: [embed] });
+            const message = await createEmbedFromStore(coordinates, storeLocationData.store);
+            await interaction.editReply(message);
         } catch (error) {
+            console.error(error);
             await interaction.editReply(`Invalid address: \`\`${addressString}\`\``);
             return;
         }
