@@ -1,8 +1,9 @@
+import { CommandInteraction, Intents, Interaction, MessageEmbed } from 'discord.js';
 import dotenvSafe from 'dotenv-safe';
-import { CommandInteraction, Intents, Interaction } from 'discord.js';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
 import { CommandClient } from './client';
+import { getProductEmbedFromProductName } from './embeds/product';
 
 dotenvSafe.config();
 
@@ -24,9 +25,9 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user!.tag}!`);
 });
 
-// Handle message events
+// Handle command interactions
 client.on('interactionCreate', async (interaction: Interaction) => {
-    if (!interaction.isCommand) return;
+    if (!interaction.isCommand()) return;
 
     const commandInteraction = interaction as CommandInteraction;
 
@@ -44,6 +45,26 @@ client.on('interactionCreate', async (interaction: Interaction) => {
         await command.execute(commandInteraction);
     } catch (error) {
         console.error(error);
+    }
+});
+
+// Handle select interactions
+client.on('interactionCreate', async (interaction: Interaction) => {
+    if (!interaction.isSelectMenu()) return;
+
+    // Selection menu for products
+    if (interaction.customId === 'product-select') {
+        // Get selected product name
+        const productName = interaction.values[0];
+
+        try {
+            // Get product embed from name
+            const embed: MessageEmbed = await getProductEmbedFromProductName(productName);
+            await interaction.update({ embeds: [embed] });
+        } catch (error) {
+            await interaction.update(`No products found for: \`\`${productName}\`\``);
+            return;
+        }
     }
 });
 
