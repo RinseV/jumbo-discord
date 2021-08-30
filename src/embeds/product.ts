@@ -100,7 +100,6 @@ export async function getProductEmbedFromProducts(productName: string, limit: nu
         .product()
         .getProductsFromName(productName, 0, limit, undefined, ProductSortOptions.POPULAR);
     if (!products) {
-        console.log(products);
         throw new Error('No products found');
     }
     return createEmbedFromProducts(productName, products);
@@ -113,7 +112,6 @@ export async function getProductsFromProductName(productName: string, limit: num
         .product()
         .getProductsFromName(productName, 0, limit, undefined, ProductSortOptions.POPULAR);
     if (!products) {
-        console.log(products);
         throw new Error('No products found');
     }
     return products;

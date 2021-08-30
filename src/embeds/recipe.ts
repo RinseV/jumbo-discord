@@ -1,6 +1,6 @@
 import { MessageEmbed, MessageEmbedOptions } from 'discord.js';
 import { Jumbo } from 'jumbo-wrapper';
-import { RecipeData } from 'jumbo-wrapper/dist/recipe/recipeModel';
+import { RecipeData, RecipeModel } from 'jumbo-wrapper/dist/recipe/recipeModel';
 
 /**
  * Creates an embed from a recipe
@@ -67,6 +67,37 @@ export function createEmbedFromRecipe(recipe: RecipeData): MessageEmbed {
     return new MessageEmbed(embed);
 }
 
+export function createEmbedFromRecipes(query: string, recipes: RecipeModel[], page: number): MessageEmbed {
+    const embed: MessageEmbedOptions = {
+        color: 0xfdc513,
+        title: `Results for \`\`${query}\`\`, page ${page}`,
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+            text: 'Powered by Jumbo',
+            icon_url: 'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png'
+        }
+    };
+
+    if (recipes.length > 0) {
+        recipes.forEach((recipe: RecipeModel) => {
+            embed.fields?.push({
+                name: `${recipe.recipe.data.name}`,
+                value: `[Click here to view](${recipe.recipe.data.webUrl})`,
+                inline: false
+            });
+        });
+    } else {
+        embed.fields?.push({
+            name: 'No results found',
+            value: 'Try searching for something else',
+            inline: false
+        });
+    }
+
+    return new MessageEmbed(embed);
+}
+
 // Function to capitalise first letter of string
 function capitaliseFirstLetter(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -97,4 +128,14 @@ export async function getRecipeDataFromId(recipeId: string): Promise<RecipeData>
 export async function getRecipeEmbedFromRecipeName(recipeName: string): Promise<MessageEmbed> {
     const recipe = await getFirstRecipeFromQuery(recipeName);
     return createEmbedFromRecipe(recipe);
+}
+
+// Function to create an embed from a page of recipes (always 10 recipes per page)
+export async function getRecipeEmbedFromRecipes(recipeName: string, page: number): Promise<MessageEmbed> {
+    const jumbo = new Jumbo();
+    const recipes = await jumbo.recipe().getRecipesFromName(recipeName, (page - 1) * 10);
+    if (!recipes) {
+        throw new Error('No recipes found');
+    }
+    return createEmbedFromRecipes(recipeName, recipes, page);
 }
