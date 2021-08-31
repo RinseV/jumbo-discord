@@ -3,7 +3,7 @@ import dotenvSafe from 'dotenv-safe';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
 import { CommandClient } from './client';
-import { getProductEmbedFromProductName } from './embeds/product';
+import { getProductEmbedFromProductName } from './utils/product';
 
 dotenvSafe.config();
 

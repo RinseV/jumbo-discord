@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { getRecipeEmbedFromRecipeName, getRecipeEmbedFromRecipes } from '../embeds/recipe';
+import { getRecipeEmbedFromRecipeName, getRecipeEmbedFromRecipes } from '../utils/recipe';
 
 module.exports = {
     data: new SlashCommandBuilder()

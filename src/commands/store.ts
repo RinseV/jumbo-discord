@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { createEmbedFromStore, findNearestStore, interpretCoordinates } from '../embeds/store';
+import { createEmbedFromStore } from '../embeds/store';
+import { interpretCoordinates, findNearestStore } from '../utils/store';
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,8 +21,9 @@ module.exports = {
             // Get location, find nearest store and send embed
             const coordinates = await interpretCoordinates(addressString);
             const storeLocationData = await findNearestStore(coordinates);
-            const message = await createEmbedFromStore(coordinates, storeLocationData.store);
+            const message = await createEmbedFromStore(interaction.guildId!, coordinates, storeLocationData.store);
             await interaction.editReply(message);
+            return;
         } catch (error) {
             console.error(error);
             await interaction.editReply(`Invalid address: \`\`${addressString}\`\``);

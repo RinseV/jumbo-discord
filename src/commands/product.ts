@@ -1,10 +1,11 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageActionRow, MessageEmbed, MessageSelectMenu } from 'discord.js';
+import { ProductModel } from 'jumbo-wrapper';
 import {
     getProductEmbedFromProductName,
     getProductEmbedFromProducts,
     getProductsFromProductName
-} from '../embeds/product';
+} from '../utils/product';
 
 // Product command to get first result from the product search
 module.exports = {
@@ -45,7 +46,7 @@ module.exports = {
                     .setPlaceholder('Nothing selected')
                     // We use the product name as key, otherwise the images won't show up
                     .addOptions(
-                        products.map((product) => {
+                        products.map((product: ProductModel) => {
                             return {
                                 label: product.product.data.title,
                                 value: product.product.data.title
