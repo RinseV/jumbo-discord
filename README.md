@@ -7,6 +7,15 @@ A Discord bot that allows for basic Jumbo API interaction. This bot uses the [ju
 * Search stores
 * Search recipes
 
+## Installation
+1. Clone this repo
+2. Make sure you are using Node version 16 (if you are using nvm, just type ``nvm use``)
+3. Install the necessary packages by running ``npm install`` or ``yarn``
+4. Copy the ``.env.example`` file, rename it to ``.env`` and fill in your details (first 3 are for Discord)
+5. If you will not be using a proxy, go into `src/utils/jumbo.ts` and make the `axiosConfig` object an empty object
+5. Invite the bot to the server you have defined in the ``.env`` file
+6. Start the bot by running ``npm run start`` or ``yarn start``
+
 ## Usage
 
 ### Products
