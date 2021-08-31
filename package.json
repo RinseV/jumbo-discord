@@ -36,7 +36,7 @@
     "date-fns": "^2.23.0",
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
-    "jumbo-wrapper": "file:../jumbo-wrapper",
+    "jumbo-wrapper": "^1.0.9",
     "node-geocoder": "^3.27.0",
     "socks-proxy-agent": "^6.0.0",
     "staticmaps": "^1.6.0"

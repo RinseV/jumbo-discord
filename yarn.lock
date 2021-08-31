@@ -1827,8 +1827,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-"jumbo-wrapper@file:../jumbo-wrapper":
-  version "1.0.8"
+jumbo-wrapper@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/jumbo-wrapper/-/jumbo-wrapper-1.0.9.tgz#ed539517a22ee0849b49123e44f7dbaa1ce5d02e"
+  integrity sha512-n5Zv5ahqvmpKhJeISZXhKRKF/DzCW11dpClQcwlFMid1hW/tDz53zuDoFl0vDmEMZViudhZBFG4qz36xD/gNlA==
   dependencies:
     axios "^0.21.1"
     date-fns "^2.17.0"
