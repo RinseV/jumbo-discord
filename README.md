@@ -1,6 +1,6 @@
 # Jumbo Discord bot
 
-A Discord bot that allows for basic Jumbo API interaction.
+A Discord bot that allows for basic Jumbo API interaction. This bot uses the [jumbo-wrapper](https://www.npmjs.com/package/jumbo-wrapper) package to communicate with the Jumbo API. Note: if you are hosting the bot on a server that is not located in the Netherlands, you'll need to use a proxy! For more info, see the [jumbo-wrapper repo](https://github.com/RinseV/jumbo-wrapper).
 
 ## Functionality
 * Search products
