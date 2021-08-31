@@ -12,6 +12,7 @@ export function capitaliseFirstLetter(str: string): string {
 export async function getFirstRecipeFromQuery(query: string): Promise<RecipeData> {
     const jumbo = new Jumbo(undefined, undefined, undefined, axiosConfig);
     const recipe = await jumbo.recipe().getFirstRecipeFromName(query);
+    console.log(recipe.recipe.data.imageInfo);
     if (!recipe) {
         throw new Error('Recipe not found');
     }

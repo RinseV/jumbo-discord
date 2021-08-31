@@ -9,6 +9,7 @@ module.exports = {
         .addStringOption((option) => option.setName('name').setDescription('Enter a recipe name').setRequired(true))
         .addIntegerOption((option) => option.setName('page').setDescription('Enter a page number').setRequired(false)),
     async execute(interaction: CommandInteraction) {
+        // Get recipe name and page from interaction
         const recipeName = interaction.options.getString('name')!;
         const page = interaction.options.getInteger('page');
 

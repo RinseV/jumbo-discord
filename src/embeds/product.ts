@@ -1,4 +1,5 @@
-import { MessageEmbed, MessageEmbedImage, MessageEmbedOptions } from 'discord.js';
+/* eslint-disable indent */
+import { MessageEmbed } from 'discord.js';
 import { ProductModel } from 'jumbo-wrapper';
 import { createUrlFromProduct } from '../utils/product';
 
@@ -9,35 +10,29 @@ import { createUrlFromProduct } from '../utils/product';
  * @returns Embed with products
  */
 export function createEmbedFromProducts(query: string, products: ProductModel[]): MessageEmbed {
-    const embed: MessageEmbedOptions = {
-        color: 0xfdc513,
-        title: `Results for \`\`${query}\`\``,
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-            text: 'Powered by Jumbo',
-            icon_url: 'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png'
-        },
-        url: `https://www.jumbo.com/zoeken?searchTerms=${query}`
-    };
-
-    if (products.length > 0) {
-        products.forEach((product: ProductModel, i: number) => {
-            embed.fields?.push({
-                name: `Result #${i + 1}`,
-                value: product.product.data.title,
-                inline: false
-            });
-        });
-    } else {
-        embed.fields?.push({
-            name: 'Error',
-            value: 'No results found',
-            inline: false
-        });
-    }
-
-    return new MessageEmbed(embed);
+    return new MessageEmbed()
+        .setColor(0xfdc513)
+        .setTitle(`Results for \`\`${query}\`\``)
+        .setURL(`https://www.jumbo.com/zoeken?searchTerms=${query}`)
+        .setTimestamp(new Date())
+        .setFooter('Powered by Jumbo', 'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png')
+        .setFields(
+            products.length > 0
+                ? products.map((product: ProductModel, i: number) => {
+                      return {
+                          name: `Result #${i + 1}`,
+                          value: product.product.data.title,
+                          inline: false
+                      };
+                  })
+                : [
+                      {
+                          name: 'Error',
+                          value: 'No results found',
+                          inline: false
+                      }
+                  ]
+        );
 }
 
 /**
@@ -46,13 +41,14 @@ export function createEmbedFromProducts(query: string, products: ProductModel[])
  * @returns Embed with product information
  */
 export function createEmbedFromProduct(product: ProductModel): MessageEmbed {
-    const imagePartial: Partial<MessageEmbedImage> = {
-        url: product.product.data.imageInfo.primaryView[0].url
-    };
-    const embed: MessageEmbedOptions = {
-        color: 0xfdc513,
-        title: `${product.product.data.title}`,
-        fields: [
+    return new MessageEmbed()
+        .setColor(0xfdc513)
+        .setTitle(product.product.data.title)
+        .setURL(createUrlFromProduct(product.product.data.title, product.product.data.id))
+        .setTimestamp(new Date())
+        .setFooter('Powered by Jumbo', 'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png')
+        .setImage(product.product.data.imageInfo.primaryView[0].url)
+        .setFields([
             {
                 name: 'Price',
                 value: `€ ${(product.product.data.prices.price.amount / 100).toFixed(2)}`,
@@ -63,15 +59,5 @@ export function createEmbedFromProduct(product: ProductModel): MessageEmbed {
                 value: `${product.product.data.quantity}`,
                 inline: true
             }
-        ],
-        timestamp: new Date(),
-        footer: {
-            text: 'Powered by Jumbo',
-            icon_url: 'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png'
-        },
-        url: createUrlFromProduct(product.product.data.title, product.product.data.id),
-        image: imagePartial
-    };
-
-    return new MessageEmbed(embed);
+        ]);
 }

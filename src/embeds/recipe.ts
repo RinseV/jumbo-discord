@@ -8,63 +8,64 @@ import { capitaliseFirstLetter } from '../utils/recipe';
  * @returns Embed of recipe
  */
 export function createEmbedFromRecipe(recipe: RecipeData): MessageEmbed {
-    const embed: MessageEmbedOptions = {
-        color: 0xfdc513,
-        title: `${recipe.name}`,
-        fields: [
-            {
-                name: 'Difficulty',
-                value: capitaliseFirstLetter(recipe.difficultyLevel!),
-                inline: true
-            },
-            {
-                name: 'Cooking time',
-                value: `${recipe.cookingTime} minutes`,
-                inline: true
-            },
-            {
-                name: '** **',
-                value: '** **',
-                inline: false
-            },
-            {
-                name: 'Number of portions',
-                value: recipe.numberOfPortions.toString(),
-                inline: true
-            },
-            {
-                name: 'Course',
-                value: capitaliseFirstLetter(recipe.course!),
-                inline: true
-            },
-            {
-                name: 'Instructions',
-                value: recipe
-                    .instructions!.map((instruction: string, index: number) => {
-                        return `**${index + 1}.** ${instruction}`;
-                    })
-                    .join('\n'),
-                inline: false
-            },
-            {
-                name: 'Ingredients',
-                value: recipe
-                    .ingredients!.map((ingredient) => {
-                        return `- ${capitaliseFirstLetter(ingredient.name)}`;
-                    })
-                    .join('\n'),
-                inline: false
-            }
-        ],
-        timestamp: new Date(),
-        footer: {
-            text: 'Powered by Jumbo',
-            icon_url: 'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png'
-        },
-        url: recipe.webUrl
-    };
-
-    return new MessageEmbed(embed);
+    return (
+        new MessageEmbed()
+            .setColor(0xfdc513)
+            .setTitle(recipe.name)
+            .setURL(recipe.webUrl)
+            .setTimestamp(new Date())
+            .setFooter(
+                'Powered by Jumbo',
+                'https://i.pinimg.com/originals/b8/f7/8d/b8f78da1ace339ea151ec64c3b04b746.png'
+            )
+            // Image not working
+            // .setImage(recipe.imageInfo.primaryView[recipe.imageInfo.primaryView.length - 1].url)
+            .setFields([
+                {
+                    name: 'Difficulty',
+                    value: capitaliseFirstLetter(recipe.difficultyLevel!),
+                    inline: true
+                },
+                {
+                    name: 'Cooking time',
+                    value: `${recipe.cookingTime} minutes`,
+                    inline: true
+                },
+                {
+                    name: '** **',
+                    value: '** **',
+                    inline: false
+                },
+                {
+                    name: 'Number of portions',
+                    value: recipe.numberOfPortions.toString(),
+                    inline: true
+                },
+                {
+                    name: 'Course',
+                    value: capitaliseFirstLetter(recipe.course!),
+                    inline: true
+                },
+                {
+                    name: 'Instructions',
+                    value: recipe
+                        .instructions!.map((instruction: string, index: number) => {
+                            return `**${index + 1}.** ${instruction}`;
+                        })
+                        .join('\n'),
+                    inline: false
+                },
+                {
+                    name: 'Ingredients',
+                    value: recipe
+                        .ingredients!.map((ingredient) => {
+                            return `- ${capitaliseFirstLetter(ingredient.name)}`;
+                        })
+                        .join('\n'),
+                    inline: false
+                }
+            ])
+    );
 }
 
 export function createEmbedFromRecipes(query: string, recipes: RecipeModel[], page: number): MessageEmbed {
